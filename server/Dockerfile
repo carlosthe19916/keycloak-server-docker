@@ -2,14 +2,6 @@ FROM jboss/keycloak-adapter-wildfly
 
 ENV OPENFACT_VERSION 1.0.RC14
 
-ENV OPENFACT_KC_REALM openfact
-ENV OPENFACT_KC_RESOURCE openfact
-ENV OPENFACT_KC_USE_RESOURCE_ROLE_MAPPINGS true
-ENV OPENFACT_KC_BEARER_ONLY true
-ENV OPENFACT_KC_AUTH_SERVER_URL https
-ENV OPENFACT_KC_SSL_REQUIRED external
-ENV OPENFACT_KC_ENABLE_CORS true
-
 WORKDIR /opt/jboss/wildfly/standalone/deployments
 
 RUN curl -L https://github.com/openfact/openfact/releases/download/$OPENFACT_VERSION/openfact.war
