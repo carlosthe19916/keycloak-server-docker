@@ -1,10 +1,8 @@
 FROM jboss/keycloak-adapter-wildfly
 
-ENV OPENFACT_VERSION 1.0.RC14
-
 WORKDIR /opt/jboss/wildfly/standalone/deployments
 
-RUN curl -L https://github.com/openfact/openfact/releases/download/$OPENFACT_VERSION/openfact.war
+RUN curl -L https://github.com/openfact/openfact/releases/download/1.0.RC14/openfact.war
 
 WORKDIR /opt/jboss
 
