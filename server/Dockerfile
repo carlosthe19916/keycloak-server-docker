@@ -2,18 +2,15 @@ FROM jboss/keycloak-adapter-wildfly
 
 ENV OPENFACT_VERSION 1.0.RC14
 
-ENV OPENFACT_KC_REALM openfact
-ENV OPENFACT_KC_BEARER_ONLY true
-ENV OPENFACT_KC_AUTH_SERVER_URL auth
-ENV OPENFACT_KC_SSL_REQUIRED external
-ENV OPENFACT_KC_RESOURCE openfact
-ENV OPENFACT_KC_USE_RESOURCE_ROLE_MAPPINGS true
-ENV OPENFACT_KC_ENABLE_CORS true
-
 # Enables signals getting passed from startup script to JVM
 # ensuring clean shutdown when container is stopped.
 ENV LAUNCH_JBOSS_IN_BACKGROUND 1
 ENV PROXY_ADDRESS_FORWARDING false
+USER root
+
+RUN yum install -y epel-release && yum install -y jq && yum clean all
+
+USER jboss
 
 # Add OpenfactDS datasource
 ADD datasource.sh /opt/jboss/wildfly/datasource.sh
@@ -23,21 +20,21 @@ RUN rm /opt/jboss/wildfly/datasource.sh
 # Standalone.xml modifications.
 WORKDIR /opt/jboss
 
+# Download war
+RUN cd $HOME && curl -L -O https://github.com/openfact/openfact/releases/download/$OPENFACT_VERSION/openfact.war && mv $HOME/openfact.war $HOME/wildfly/standalone/deployments
+
 #Enabling Proxy address forwarding so we can correctly handle SSL termination in front ends
 #such as an OpenShift Router or Apache Proxy
 RUN sed -i -e 's/<http-listener /& proxy-address-forwarding="${env.PROXY_ADDRESS_FORWARDING}" /' $JBOSS_HOME/standalone/configuration/standalone.xml
 
 # Adding keycloak subsystem configuration
 RUN sed -i '/<subsystem xmlns="urn:jboss:domain:keycloak:1.1"\/>/ d' $JBOSS_HOME/standalone/configuration/standalone.xml && \
-    sed -i -e 's/<profile>/&\n        <subsystem xmlns="urn:jboss:domain:keycloak:1.1">\n            <secure-deployment name="openfact.war">\n                <realm><\/realm>\n                <bearer-only><\/bearer-only>\n                <auth-server-url><\/auth-server-url>\n                <ssl-required><\/ssl-required>\n                <resource><\/resource>\n                <use-resource-role-mappings><\/use-resource-role-mappings>\n                <enable-cors><\/enable-cors>\n            <\/secure-deployment>\n        <\/subsystem>/' $JBOSS_HOME/standalone/configuration/standalone.xml
-
-# Download war
-RUN cd $HOME && curl -L -O https://github.com/openfact/openfact/releases/download/$OPENFACT_VERSION/openfact.war && mv $HOME/openfact.war $HOME/wildfly/standalone/deployments
+    sed -i -e 's/<profile>/&\n        <subsystem xmlns="urn:jboss:domain:keycloak:1.1">\n        <\/subsystem>/' $JBOSS_HOME/standalone/configuration/standalone.xml
 
 ADD changeSubsystem.xsl /opt/jboss/wildfly/
 
 ADD docker-entrypoint.sh /opt/jboss/
 
-EXPOSE 8080
+EXPOSE 8080 9990
 ENTRYPOINT [ "/opt/jboss/docker-entrypoint.sh" ]
 CMD ["-b", "0.0.0.0"]
