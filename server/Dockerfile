@@ -31,10 +31,3 @@ RUN cd $HOME && curl -L -O https://github.com/openfact/openfact/releases/downloa
 #Enabling Proxy address forwarding so we can correctly handle SSL termination in front ends
 #such as an OpenShift Router or Apache Proxy
 RUN sed -i -e 's/<http-listener /& proxy-address-forwarding="${env.PROXY_ADDRESS_FORWARDING}" /' $JBOSS_HOME/standalone/configuration/standalone.xml
-
-ADD docker-entrypoint.sh /opt/jboss/
-
-ENTRYPOINT [ "/opt/jboss/docker-entrypoint.sh" ]
-CMD ["-b", "0.0.0.0"]
-
-
