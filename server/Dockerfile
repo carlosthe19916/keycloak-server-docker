@@ -12,11 +12,6 @@ RUN yum install -y epel-release && yum install -y jq && yum clean all
 
 USER jboss
 
-# Add OpenfactDS datasource
-ADD datasource.sh /opt/jboss/wildfly/datasource.sh
-RUN /opt/jboss/wildfly/datasource.sh
-RUN rm /opt/jboss/wildfly/datasource.sh
-
 # Standalone.xml modifications.
 WORKDIR /opt/jboss
 
@@ -27,11 +22,16 @@ RUN cd $HOME && curl -L -O https://github.com/openfact/openfact/releases/downloa
 #such as an OpenShift Router or Apache Proxy
 RUN sed -i -e 's/<http-listener /& proxy-address-forwarding="${env.PROXY_ADDRESS_FORWARDING}" /' $JBOSS_HOME/standalone/configuration/standalone.xml
 
-# Adding keycloak subsystem configuration
-RUN sed -i '/<subsystem xmlns="urn:jboss:domain:keycloak:1.1"\/>/ d' $JBOSS_HOME/standalone/configuration/standalone.xml && \
-    sed -i -e 's/<profile>/&\n        <subsystem xmlns="urn:jboss:domain:keycloak:1.1">\n        <\/subsystem>/' $JBOSS_HOME/standalone/configuration/standalone.xml
+# Add OpenfactDS datasource
+ADD changeDatabase.xsl /opt/jboss/wildfly
+RUN java -jar /usr/share/java/saxon.jar -s:/opt/jboss/wildfly/standalone/configuration/standalone.xml -xsl:/opt/jboss/wildfly/changeDatabase.xsl -o:/opt/jboss/wildfly/standalone/configuration/standalone.xml; java -jar /usr/share/java/saxon.jar -s:/opt/jboss/wildfly/standalone/configuration/standalone-ha.xml -xsl:/opt/jboss/wildfly/changeDatabase.xsl -o:/opt/jboss/wildfly/standalone/configuration/standalone-ha.xml; rm /opt/jboss/wildfly/changeDatabase.xsl
+
+RUN head -2000 /opt/jboss/wildfly/standalone/configuration/standalone.xml
 
 ADD changeSubsystem.xsl /opt/jboss/wildfly/
+RUN java -jar /usr/share/java/saxon.jar -s:/opt/jboss/wildfly/standalone/configuration/standalone.xml -xsl:/opt/jboss/wildfly/changeSubsystem.xsl -o:/opt/jboss/wildfly/standalone/configuration/standalone.xml; java -jar /usr/share/java/saxon.jar -s:/opt/jboss/wildfly/standalone/configuration/standalone-ha.xml -xsl:/opt/jboss/wildfly/changeSubsystem.xsl -o:/opt/jboss/wildfly/standalone/configuration/standalone-ha.xml; rm /opt/jboss/wildfly/changeSubsystem.xsl
+
+RUN head -2000 /opt/jboss/wildfly/standalone/configuration/standalone.xml
 
 ADD docker-entrypoint.sh /opt/jboss/
 
