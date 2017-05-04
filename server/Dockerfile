@@ -12,9 +12,6 @@ RUN yum install -y epel-release && yum install -y jq && yum clean all
 
 USER jboss
 
-# Standalone.xml modifications.
-WORKDIR /opt/jboss
-
 # Download war
 RUN cd $HOME && curl -L -O https://github.com/openfact/openfact/releases/download/$OPENFACT_VERSION/openfact.war && mv $HOME/openfact.war $HOME/wildfly/standalone/deployments
 
@@ -26,13 +23,10 @@ RUN sed -i -e 's/<http-listener /& proxy-address-forwarding="${env.PROXY_ADDRESS
 ADD changeDatabase.xsl /opt/jboss/wildfly
 RUN java -jar /usr/share/java/saxon.jar -s:/opt/jboss/wildfly/standalone/configuration/standalone.xml -xsl:/opt/jboss/wildfly/changeDatabase.xsl -o:/opt/jboss/wildfly/standalone/configuration/standalone.xml; java -jar /usr/share/java/saxon.jar -s:/opt/jboss/wildfly/standalone/configuration/standalone-ha.xml -xsl:/opt/jboss/wildfly/changeDatabase.xsl -o:/opt/jboss/wildfly/standalone/configuration/standalone-ha.xml; rm /opt/jboss/wildfly/changeDatabase.xsl
 
-RUN head -2000 /opt/jboss/wildfly/standalone/configuration/standalone.xml
+ADD addSubsystem.xsl /opt/jboss/wildfly/
+RUN java -jar /usr/share/java/saxon.jar -s:/opt/jboss/wildfly/standalone/configuration/standalone.xml -xsl:/opt/jboss/wildfly/addSubsystem.xsl -o:/opt/jboss/wildfly/standalone/configuration/standalone.xml; java -jar /usr/share/java/saxon.jar -s:/opt/jboss/wildfly/standalone/configuration/standalone-ha.xml -xsl:/opt/jboss/wildfly/addSubsystem.xsl -o:/opt/jboss/wildfly/standalone/configuration/standalone-ha.xml; rm /opt/jboss/wildfly/addSubsystem.xsl
 
-ADD changeSubsystem.xsl /opt/jboss/wildfly/
-RUN java -jar /usr/share/java/saxon.jar -s:/opt/jboss/wildfly/standalone/configuration/standalone.xml -xsl:/opt/jboss/wildfly/changeSubsystem.xsl -o:/opt/jboss/wildfly/standalone/configuration/standalone.xml; java -jar /usr/share/java/saxon.jar -s:/opt/jboss/wildfly/standalone/configuration/standalone-ha.xml -xsl:/opt/jboss/wildfly/changeSubsystem.xsl -o:/opt/jboss/wildfly/standalone/configuration/standalone-ha.xml; rm /opt/jboss/wildfly/changeSubsystem.xsl
-
-RUN head -2000 /opt/jboss/wildfly/standalone/configuration/standalone.xml
-
+ADD changeSubsystem.xsl /opt/jboss/
 ADD docker-entrypoint.sh /opt/jboss/
 
 EXPOSE 8080 9990
