@@ -7,6 +7,14 @@ Example Dockerfile with Openfact server.
 To boot in standalone mode
 
     docker run openfact/openfact
+    
+# Running with custom keycloak auth server
+
+    docker run -e KEYCLOAK_AUTH_SERVER_URL=<https://keycloak/auth> openfact/openfact
+
+# Runnin with full custom variables
+
+    docker run -e KEYCLOAK_REALM=<openfact> -e KEYCLOAK_BEARER_ONLY=<true> -e KEYCLOAK_AUTH_SERVER_URL=<https://openfact.org/auth> -e KEYCLOAK_SSL_REQUIRED=<external> -e KEYCLOAK_RESOURCE=<openfact> -e KEYCLOAK_USE_RESOURCE_ROLE_MAPPINGS=<true> -e KEYCLOAK_ENABLE_CORS=<true>
 
 ## Other details
 
