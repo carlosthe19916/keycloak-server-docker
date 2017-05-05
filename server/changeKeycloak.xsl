@@ -10,13 +10,13 @@
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
             <kc:secure-deployment name="openfact.war">
-                <kc:realm>${env.KEYCLOAK_REALM:openfact}</kc:realm>
-                <kc:bearer-only>${env.KEYCLOAK_BEARER_ONLY:true}</kc:bearer-only>
-                <kc:auth-server-url>${env.KEYCLOAK_AUTH_SERVER_URL:http://openfact.org/auth}</kc:auth-server-url>
-                <kc:ssl-required>${env.KEYCLOAK_SSL_REQUIRED:external}</kc:ssl-required>
-                <kc:resource>${env.KEYCLOAK_RESOURCE:openfact}</kc:resource>
-                <kc:use-resource-role-mappings>${env.KEYCLOAK_USE_RESOURCE_ROLE_MAPPINGS:true}</kc:use-resource-role-mappings>
-                <kc:enable-cors>${env.KEYCLOAK_ENABLE_CORS:true}</kc:enable-cors>
+                <kc:realm>openfact</kc:realm>
+                <kc:bearer-only>true</kc:bearer-only>
+                <kc:auth-server-url>${env.OPENFACT_PORT_8080_TCP_ADDR}:{env.OPENFACT_PORT_8080_TCP_PORT}/auth</kc:auth-server-url>
+                <kc:ssl-required>external</kc:ssl-required>
+                <kc:resource>openfact</kc:resource>
+                <kc:use-resource-role-mappings>true</kc:use-resource-role-mappings>
+                <kc:enable-cors>true</kc:enable-cors>
             </kc:secure-deployment>
         </xsl:copy>
     </xsl:template>
