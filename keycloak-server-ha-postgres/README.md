@@ -14,13 +14,13 @@ First start a PostgreSQL instance using the PostgreSQL docker image:
 
 Start two or more Keycloak instances that form a cluster and connect to the PostgreSQL instance running in previously started 'postgres' container:
 
-    docker run --name keycloak --link postgres:postgres -e POSTGRES_DATABASE=keycloak -e POSTGRES_USER=keycloak -e POSTGRES_PASSWORD=password jboss/keycloak-ha-postgres
+    docker run --name keycloak --link postgres:postgres -e POSTGRES_DATABASE=keycloak -e POSTGRES_USER=keycloak -e POSTGRES_PASSWORD=password openfact/keycloak-ha-postgres
     docker logs -f keycloak
 
-    docker run --name keycloak2 --link postgres:postgres -e POSTGRES_DATABASE=keycloak -e POSTGRES_USER=keycloak -e POSTGRES_PASSWORD=password jboss/keycloak-ha-postgres
+    docker run --name keycloak2 --link postgres:postgres -e POSTGRES_DATABASE=keycloak -e POSTGRES_USER=keycloak -e POSTGRES_PASSWORD=password openfact/keycloak-ha-postgres
     docker logs -f keycloak2
 
 
 ## Other details
 
-This image extends the [`jboss/keycloak-postgres`](https://github.com/jboss-dockerfiles/keycloak) image. Please refer to the README.md for selected images for more info.
+This image extends the [`jboss/keycloak-postgres`](https://github.com/openfact/openfact-dockerfiles) image. Please refer to the README.md for selected images for more info.

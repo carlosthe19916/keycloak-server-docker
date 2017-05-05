@@ -14,13 +14,13 @@ First start a MySQL instance using the MySQL docker image:
 
 Start a Keycloak instance and connect to the MySQL instance:
 
-    docker run --name keycloak --link mysql:mysql jboss/keycloak-mysql
+    docker run --name keycloak --link mysql:mysql openfact/keycloak-mysql
 
 ### Environment variables
 
 When starting the Keycloak instance you can pass a number of environment variables to configure how it connects to MySQL. For example:
 
-    docker run --name keycloak --link mysql:mysql -e MYSQL_DATABASE=keycloak -e MYSQL_USERNAME=keycloak -e MYSQL_PASSWORD=password jboss/keycloak-mysql
+    docker run --name keycloak --link mysql:mysql -e MYSQL_DATABASE=keycloak -e MYSQL_USERNAME=keycloak -e MYSQL_PASSWORD=password openfact/keycloak-mysql
 
 #### MYSQL_DATABASE
 
