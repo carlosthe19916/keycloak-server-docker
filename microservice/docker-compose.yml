@@ -1,0 +1,10 @@
+keycloak:
+  image: openfact/keycloak
+  ports:
+    - 8081:8080
+openfact:
+  image: openfact/openfact
+  links:
+    - keycloak:keycloak
+  ports:
+      - 8080:8080
