@@ -12,7 +12,7 @@
             <kc:secure-deployment name="openfact.war">
                 <kc:realm>openfact</kc:realm>
                 <kc:bearer-only>true</kc:bearer-only>
-                <kc:auth-server-url>${env.KEYCLOAK_PORT_8080_TCP_ADDR}:${env.KEYCLOAK_PORT_8080_TCP_PORT}/auth</kc:auth-server-url>
+                <kc:auth-server-url>${env.KEYCLOAK_PORT_8080_TCP_PROTO}://${env.KEYCLOAK_PORT_8080_TCP_ADDR}:${env.KEYCLOAK_PORT_8080_TCP_PORT}/auth</kc:auth-server-url>
                 <kc:ssl-required>external</kc:ssl-required>
                 <kc:resource>openfact</kc:resource>
                 <kc:use-resource-role-mappings>true</kc:use-resource-role-mappings>
