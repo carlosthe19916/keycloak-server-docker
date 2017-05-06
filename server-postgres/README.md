@@ -14,13 +14,13 @@ First start a PostgreSQL instance using the PostgreSQL docker image:
 
 Start a Openfact instance and connect to the PostgreSQL instance:
 
-    docker run --name openfact --link postgres:postgres jboss/openfact-postgres
+    docker run --name openfact --link postgres:postgres openfact/openfact-postgres
 
 ### Environment variables
 
 When starting the Openfact instance you can pass a number of environment variables to configure how it connects to PostgreSQL. For example:
 
-    docker run --name openfact --link postgres:postgres -e POSTGRES_DATABASE=openfact -e POSTGRES_USER=openfact -e POSTGRES_PASSWORD=password jboss/openfact-postgres
+    docker run --name openfact --link postgres:postgres -e POSTGRES_DATABASE=openfact -e POSTGRES_USER=openfact -e POSTGRES_PASSWORD=password openfact/openfact-postgres
 
 #### POSTGRES_DATABASE
 

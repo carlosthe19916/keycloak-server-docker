@@ -14,13 +14,13 @@ First start a MySQL instance using the MySQL docker image:
 
 Start a Openfact instance and connect to the MySQL instance:
 
-    docker run --name openfact --link mysql:mysql jboss/openfact-mysql
+    docker run --name openfact --link mysql:mysql openfact/openfact-mysql
 
 ### Environment variables
 
 When starting the Openfact instance you can pass a number of environment variables to configure how it connects to MySQL. For example:
 
-    docker run --name openfact --link mysql:mysql -e MYSQL_DATABASE=openfact -e MYSQL_USER=openfact -e MYSQL_PASSWORD=password jboss/openfact-mysql
+    docker run --name openfact --link mysql:mysql -e MYSQL_DATABASE=openfact -e MYSQL_USER=openfact -e MYSQL_PASSWORD=password openfact/openfact-mysql
 
 #### MYSQL_DATABASE
 
