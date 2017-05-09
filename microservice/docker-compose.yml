@@ -1,32 +1,41 @@
-version: '3.1'
-
+version: "3"
 services:
 
-  keycloak_db:
-    image: mysql:5.7
-    environment:
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: keycloak
-      MYSQL_USER: keycloak
-      MYSQL_PASSWORD: password
-    networks:
-      - sso
-
   keycloak:
-    image: openfact/keycloak-mysql:latest
-    volumes:
-      - keycloak-db-data:/var/lib/mysql
+    image: openfact/keycloak-postgres
+    environment:
+      - POSTGRES_PORT_5432_TCP_ADDR=postgres
+      - POSTGRES_PORT_5432_TCP_PORT=5432
     ports:
       - 8080:8080
     networks:
-      - keycloak
-    links:
-      - keycloak_db:mysql
+      - sso
+    depends_on:
+      - postgres
     deploy:
       replicas: 2
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+  postgres:
+    image: postgres:9.4
+    environment:
+      POSTGRES_ROOT_PASSWORD: root_password
+      POSTGRES_DATABASE: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - sso
+    deploy:
+      placement:
+        constraints: [node.role == manager]
 
 networks:
-  keycloak:
+  sso:
 
 volumes:
-  keycloak-db-data:
+  db-data:
