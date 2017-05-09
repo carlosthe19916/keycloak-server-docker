@@ -14,19 +14,19 @@ First create a network:
 
 First start a PostgreSQL instance using the PostgreSQL docker image:
 
-    docker run --name postgres --network sso --network-alias postgres -e POSTGRES_DATABASE=keycloak -e POSTGRES_USER=keycloak -e POSTGRES_PASSWORD=password -e POSTGRES_ROOT_PASSWORD=root_password -d postgres
+    docker container run --name postgres --network sso --network-alias postgres -e POSTGRES_DATABASE=keycloak -e POSTGRES_USER=keycloak -e POSTGRES_PASSWORD=password -e POSTGRES_ROOT_PASSWORD=root_password -d postgres
 
 ### Start a Keycloak instance
 
 Start a Keycloak instance and connect to the PostgreSQL instance:
 
-    docker run --name keycloak --network sso --network-alias keycloak -e POSTGRES_PORT_5432_TCP_ADDR=mysql openfact/keycloak-postgres
+    docker container run --name keycloak --network sso --network-alias keycloak -e POSTGRES_PORT_5432_TCP_ADDR=postgres openfact/keycloak-postgres
 
 ### Environment variables
 
 When starting the Keycloak instance you can pass a number of environment variables to configure how it connects to PostgreSQL. For example:
 
-    docker run --name keycloak --link postgres:postgres -e POSTGRES_DATABASE=keycloak -e POSTGRES_USER=keycloak -e POSTGRES_PASSWORD=password openfact/keycloak-postgres
+    docker container run --name keycloak --network sso --network-alias keycloak -e POSTGRES_PORT_5432_TCP_ADDR=postgres -e POSTGRES_PORT_5432_TCP_PORT=5432 -e POSTGRES_DATABASE=keycloak -e POSTGRES_USER=keycloak -e POSTGRES_PASSWORD=password openfact/keycloak-postgres
 
 #### POSTGRES_DATABASE
 
