@@ -22,12 +22,41 @@ services:
   postgres:
     image: postgres:9.4
     environment:
-      POSTGRES_ROOT_PASSWORD: root_password
-      POSTGRES_DATABASE: keycloak
-      POSTGRES_USER: keycloak
-      POSTGRES_PASSWORD: password
+      - POSTGRES_ROOT_PASSWORD=root_password
+      - POSTGRES_DATABASE=keycloak
+      - POSTGRES_USER=keycloak
+      - POSTGRES_PASSWORD=password
     volumes:
       - db-data:/var/lib/postgresql/data
+    networks:
+      - sso
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+  openfact:
+    image: openfact/openfact
+    ports:
+      - 8081:8080
+    networks:
+      - ubl
+    depends_on:
+      - postgres-openfact
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+  postgres-openfact:
+    image: postgres:9.4
+    environment:
+      - POSTGRES_ROOT_PASSWORD=root_password
+      - POSTGRES_DATABASE=openfact
+      - POSTGRES_USER=openfact
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - openfact-db-data:/var/lib/postgresql/data
     networks:
       - sso
     deploy:
@@ -36,6 +65,8 @@ services:
 
 networks:
   sso:
+  ubl:
 
 volumes:
   db-data:
+  openfact-db-data:
