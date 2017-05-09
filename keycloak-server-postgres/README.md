@@ -4,17 +4,23 @@ Extends the Keycloak docker image to use PostgreSQL
 
 ## Usage
 
+### Start a Network instance
+
+First create a network:
+
+    docker network create sso
+
 ### Start a PostgreSQL instance
 
 First start a PostgreSQL instance using the PostgreSQL docker image:
 
-    docker run --name postgres -e POSTGRES_DATABASE=keycloak -e POSTGRES_USER=keycloak -e POSTGRES_PASSWORD=password -e POSTGRES_ROOT_PASSWORD=root_password -d postgres
+    docker run --name postgres --network sso --network-alias postgres -e POSTGRES_DATABASE=keycloak -e POSTGRES_USER=keycloak -e POSTGRES_PASSWORD=password -e POSTGRES_ROOT_PASSWORD=root_password -d postgres
 
 ### Start a Keycloak instance
 
 Start a Keycloak instance and connect to the PostgreSQL instance:
 
-    docker run --name keycloak --link postgres:postgres openfact/keycloak-postgres
+    docker run --name keycloak --network sso --network-alias keycloak -e POSTGRES_PORT_5432_TCP_ADDR=mysql openfact/keycloak-postgres
 
 ### Environment variables
 
