@@ -1,10 +1,32 @@
-keycloak:
-  image: openfact/keycloak
-  ports:
-    - 8081:8080
-openfact:
-  image: openfact/openfact
-  links:
-    - keycloak:keycloak
-  ports:
+version: '3.1'
+
+services:
+
+  keycloak_db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: keycloak
+      MYSQL_USER: keycloak
+      MYSQL_PASSWORD: password
+    networks:
+      - sso
+
+  keycloak:
+    image: openfact/keycloak-mysql:latest
+    volumes:
+      - keycloak-db-data:/var/lib/mysql
+    ports:
       - 8080:8080
+    networks:
+      - keycloak
+    links:
+      - keycloak_db:mysql
+    deploy:
+      replicas: 2
+
+networks:
+  keycloak:
+
+volumes:
+  keycloak-db-data:

@@ -20,7 +20,7 @@ Start a MySQL instance using the MySQL docker image:
 
 Start a Keycloak instance and connect to the MySQL instance:
 
-    docker container run --name keycloak --network sso --network-alias keycloak -e MYSQL_PORT_3306_TCP_ADDR=mysql openfact/keycloak-mysql
+    docker container run --name keycloak --network sso --network-alias keycloak openfact/keycloak-mysql
 
 ### Environment variables
 

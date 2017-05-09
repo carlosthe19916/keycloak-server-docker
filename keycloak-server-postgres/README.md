@@ -20,7 +20,7 @@ First start a PostgreSQL instance using the PostgreSQL docker image:
 
 Start a Keycloak instance and connect to the PostgreSQL instance:
 
-    docker container run --name keycloak --network sso --network-alias keycloak -e POSTGRES_PORT_5432_TCP_ADDR=postgres openfact/keycloak-postgres
+    docker container run --name keycloak --network sso --network-alias keycloak openfact/keycloak-postgres
 
 ### Environment variables
 
