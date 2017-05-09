@@ -1,4 +1,4 @@
-FROM jboss/keycloak:3.0.0.Final
+FROM jboss/keycloak:2.5.5.Final
 
 ADD openfact-realm.json /opt/jboss/keycloak/
 
