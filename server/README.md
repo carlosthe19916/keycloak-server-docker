@@ -4,17 +4,25 @@ Example Dockerfile with Openfact server.
 
 ## Usage
 
+### Start a Network instance
+
+First create a network:
+
+    docker network create ubl
+
+### Start a Keycloak instance
 To boot in standalone mode
 
-    docker run openfact/openfact
-    
-# Running with custom keycloak auth server
+    docker container run --name keycloak --network ubl --network-alias -d keycloak openfact/keycloak
 
-    docker run -e KEYCLOAK_AUTH_SERVER_URL=<https://keycloak/auth> openfact/openfact
+### Start a Openfact instance
+To boot in standalone mode
+
+    docker container run --name openfact --network ubl --network-alias openfact -e KEYCLOAK_PORT_8080_TCP_ADDR=keycloak openfact/openfact
 
 # Running with full custom variables
 
-    docker run -e KEYCLOAK_REALM=<openfact> -e KEYCLOAK_BEARER_ONLY=<true> -e KEYCLOAK_AUTH_SERVER_URL=<https://openfact.org/auth> -e KEYCLOAK_SSL_REQUIRED=<external> -e KEYCLOAK_RESOURCE=<openfact> -e KEYCLOAK_USE_RESOURCE_ROLE_MAPPINGS=<true> -e KEYCLOAK_ENABLE_CORS=<true>
+    docker container run --name openfact --network ubl --network-alias openfact -e KEYCLOAK_PORT_8080_TCP_ADDR=keycloak -e KEYCLOAK_PORT_8080_TCP_PORT=8080
 
 ## Other details
 
