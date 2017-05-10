@@ -5,7 +5,7 @@ RUN java -jar /usr/share/java/saxon.jar -s:/opt/jboss/wildfly/standalone/configu
 RUN mkdir -p /opt/jboss/wildfly/modules/system/layers/base/org/postgresql/jdbc/main; cd /opt/jboss/wildfly/modules/system/layers/base/org/postgresql/jdbc/main; curl -O http://central.maven.org/maven2/org/postgresql/postgresql/9.3-1102-jdbc3/postgresql-9.3-1102-jdbc3.jar
 ADD module.xml /opt/jboss/wildfly/modules/system/layers/base/org/postgresql/jdbc/main/
 
-COPY  docker-entrypoint-waitforit.sh wait-for-it.sh /
-ENTRYPOINT ["/docker-entrypoint-waitforit.sh"]
+COPY  docker-entrypoint-waitforit.sh wait-for-it.sh /opt/jboss
+ENTRYPOINT ["/opt/jboss/docker-entrypoint-waitforit.sh"]
 
 CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-b", "0.0.0.0"]

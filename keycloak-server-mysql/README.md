@@ -14,7 +14,7 @@ First create a network:
 
 Start a MySQL instance using the MySQL docker image:
 
-    docker container run --name mysql --network sso --network-alias mysql -e MYSQL_DATABASE=keycloak -e MYSQL_USER=keycloak -e MYSQL_PASSWORD=password -e MYSQL_ROOT_PASSWORD=root_password -d mysql/mysql-server
+    docker container run --name mysql --network sso --network-alias mysql -e MYSQL_DATABASE=keycloak -e MYSQL_USER=keycloak -e MYSQL_PASSWORD=password -e MYSQL_ROOT_PASSWORD=root_password -d mysql
 
 ### Start a Keycloak instance
 

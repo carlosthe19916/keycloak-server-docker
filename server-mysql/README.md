@@ -4,17 +4,28 @@ Extends the Openfact docker image to use MySQL
 
 ## Usage
 
+### Start a Network instance
+
+First create a network:
+
+    docker network create ubl
+
+### Start a Keycloak instance
+To boot in standalone mode
+
+    docker container run --name keycloak --network ubl --network-alias keycloak -d openfact/keycloak
+
 ### Start a MySQL instance
 
 First start a MySQL instance using the MySQL docker image:
 
-    docker run --name mysql -e MYSQL_DATABASE=openfact -e MYSQL_USER=openfact -e MYSQL_PASSWORD=password -e MYSQL_ROOT_PASSWORD=root_password -d mysql
+    docker container run --name mysql --network ubl --network-alias mysql -e MYSQL_DATABASE=openfact -e MYSQL_USER=openfact -e MYSQL_PASSWORD=password -e MYSQL_ROOT_PASSWORD=root_password -d mysql
 
 ### Start a Openfact instance
 
 Start a Openfact instance and connect to the MySQL instance:
 
-    docker run --name openfact --link mysql:mysql openfact/openfact-mysql
+    docker container run --name openfact --network ubl --network-alias openfact -e KEYCLOAK_PORT_8080_TCP_ADDR=keycloak openfact/openfact-mysql
 
 ### Environment variables
 

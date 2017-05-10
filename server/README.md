@@ -13,7 +13,7 @@ First create a network:
 ### Start a Keycloak instance
 To boot in standalone mode
 
-    docker container run --name keycloak --network ubl --network-alias -d keycloak openfact/keycloak
+    docker container run --name keycloak --network ubl --network-alias keycloak -d openfact/keycloak
 
 ### Start a Openfact instance
 To boot in standalone mode
