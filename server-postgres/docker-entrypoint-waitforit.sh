@@ -1,4 +1,6 @@
 #!/bin/bash
-exec /opt/jboss/wait-for-it.sh ${POSTGRES_PORT_5432_TCP_ADDR:-postgres}:${POSTGRES_PORT_5432_TCP_PORT:5432} -t 60 $@
+
+/opt/jboss/wait-for-it.sh ${POSTGRES_PORT_5432_TCP_ADDR:-postgres}:${POSTGRES_PORT_5432_TCP_PORT:5432} -t 60 $@
+
 exec /opt/jboss/wildfly/bin/standalone.sh $@
 exit $?
