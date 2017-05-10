@@ -9,5 +9,3 @@ RUN java -jar /usr/share/java/saxon.jar -s:/opt/jboss/wildfly/standalone/configu
 
 ADD changeKeycloak.xsl /opt/jboss/wildfly
 RUN java -jar /usr/share/java/saxon.jar -s:/opt/jboss/wildfly/standalone/configuration/standalone.xml -xsl:/opt/jboss/wildfly/changeKeycloak.xsl -o:/opt/jboss/wildfly/standalone/configuration/standalone.xml; java -jar /usr/share/java/saxon.jar -s:/opt/jboss/wildfly/standalone/configuration/standalone-ha.xml -xsl:/opt/jboss/wildfly/changeKeycloak.xsl -o:/opt/jboss/wildfly/standalone/configuration/standalone-ha.xml; rm /opt/jboss/wildfly/changeKeycloak.xsl
-
-HEALTHCHECK --interval=20s --timeout=5s CMD curl --fail http://${env.KEYCLOAK_PORT_8080_TCP_ADDR:keycloak}:${env.KEYCLOAK_PORT_8080_TCP_PORT:8080}/auth/ || exit 1
