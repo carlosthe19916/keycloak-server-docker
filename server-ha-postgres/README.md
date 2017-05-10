@@ -26,12 +26,10 @@ Start a PostgreSQL instance using the PostgreSQL docker image:
 
 Start two or more Openfact instances that form a cluster and connect to the PostgreSQL instance running in previously started 'postgres' container:
 
-    docker container run --name openfact1 --network ubl -e KEYCLOAK_PORT_8080_TCP_ADDR=keycloak -e KEYCLOAK_PORT_8080_TCP_PORT=8080 -e POSTGRES_PORT_5432_TCP_ADDR=postgres -e POSTGRES_PORT_5432_TCP_PORT=5432 -e POSTGRES_DATABASE=openfact -e POSTGRES_USER=openfact -e POSTGRES_PASSWORD=password -d openfact/openfact-ha-postgres
-
+    docker container run --name openfact1 --network ubl -d openfact/openfact-ha-postgres
     docker logs -f openfact1
 
-    docker container run --name openfact2 --network ubl -e KEYCLOAK_PORT_8080_TCP_ADDR=keycloak -e KEYCLOAK_PORT_8080_TCP_PORT=8080 -e POSTGRES_PORT_5432_TCP_ADDR=postgres -e POSTGRES_PORT_5432_TCP_PORT=5432 -e POSTGRES_DATABASE=openfact -e POSTGRES_USER=openfact -e POSTGRES_PASSWORD=password -d openfact/openfact-ha-postgres
-    
+    docker container run --name openfact2 --network ubl -d openfact/openfact-ha-postgres
     docker logs -f openfact2
 
 

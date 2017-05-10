@@ -6,7 +6,7 @@ RUN mkdir -p /opt/jboss/wildfly/modules/system/layers/base/com/mysql/jdbc/main; 
 ADD module.xml /opt/jboss/wildfly/modules/system/layers/base/com/mysql/jdbc/main/
 RUN head -2000 /opt/jboss/wildfly/standalone/configuration/standalone.xml
 
-COPY  docker-entrypoint-waitforit.sh wait-for-it.sh /opt/jboss
+COPY  docker-entrypoint-waitforit.sh wait-for-it.sh /opt/jboss/
 ENTRYPOINT ["/opt/jboss/docker-entrypoint-waitforit.sh"]
 
 CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-b", "0.0.0.0"]
