@@ -1,4 +1,4 @@
-FROM jboss/keycloak-adapter-wildfly:3.0.0.Final
+FROM jboss/keycloak-adapter-wildfly:2.5.5.Final
 
 ENV OPENFACT_VERSION 1.0.RC14
 

@@ -18,7 +18,7 @@ To boot in standalone mode
 ### Start a Openfact instance
 To boot in standalone mode
 
-    docker container run --name openfact --network ubl --network-alias openfact -e KEYCLOAK_PORT_8080_TCP_ADDR=keycloak openfact/openfact
+    docker container run --name openfact --network ubl --network-alias openfact openfact/openfact
 
 # Running with full custom variables
 
