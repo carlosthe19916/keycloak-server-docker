@@ -9,4 +9,4 @@ RUN head -2000 /opt/jboss/wildfly/standalone/configuration/standalone.xml
 COPY  docker-entrypoint-waitforit.sh wait-for-it.sh /opt/jboss/
 ENTRYPOINT ["/opt/jboss/docker-entrypoint-waitforit.sh"]
 
-CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-b", "0.0.0.0"]
+CMD ["-b", "0.0.0.0"]

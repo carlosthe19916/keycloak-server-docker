@@ -8,4 +8,4 @@ ADD module.xml /opt/jboss/wildfly/modules/system/layers/base/org/postgresql/jdbc
 COPY  docker-entrypoint-waitforit.sh wait-for-it.sh /opt/jboss/
 ENTRYPOINT ["/opt/jboss/docker-entrypoint-waitforit.sh"]
 
-CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-b", "0.0.0.0"]
+CMD ["-b", "0.0.0.0"]
