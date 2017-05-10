@@ -8,7 +8,7 @@
 
     <xsl:template match="//ds:subsystem/ds:datasources/ds:datasource[@jndi-name='java:jboss/datasources/OpenfactDS']">
         <ds:datasource jndi-name="java:jboss/datasources/OpenfactDS" enabled="true" use-java-context="true" pool-name="OpenfactDS" use-ccm="true">
-            <ds:connection-url>jdbc:postgresql://${env.POSTGRES_PORT_5432_TCP_ADDR}:${env.POSTGRES_PORT_5432_TCP_PORT:5432}/${env.POSTGRES_DATABASE:openfact}</ds:connection-url>
+            <ds:connection-url>jdbc:postgresql://${env.POSTGRES_PORT_5432_TCP_ADDR:postgres}:${env.POSTGRES_PORT_5432_TCP_PORT:5432}/${env.POSTGRES_DATABASE:openfact}</ds:connection-url>
             <ds:driver>postgresql</ds:driver>
             <ds:security>
                 <ds:user-name>${env.POSTGRES_USER:openfact}</ds:user-name>

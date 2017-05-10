@@ -5,3 +5,8 @@ RUN java -jar /usr/share/java/saxon.jar -s:/opt/jboss/wildfly/standalone/configu
 RUN mkdir -p /opt/jboss/wildfly/modules/system/layers/base/com/mysql/jdbc/main; cd /opt/jboss/wildfly/modules/system/layers/base/com/mysql/jdbc/main && curl -O http://central.maven.org/maven2/mysql/mysql-connector-java/5.1.18/mysql-connector-java-5.1.18.jar
 ADD module.xml /opt/jboss/wildfly/modules/system/layers/base/com/mysql/jdbc/main/
 RUN head -2000 /opt/jboss/wildfly/standalone/configuration/standalone.xml
+
+COPY  docker-entrypoint-waitforit.sh wait-for-it.sh /
+ENTRYPOINT ["/docker-entrypoint-waitforit.sh"]
+
+CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-b", "0.0.0.0"]

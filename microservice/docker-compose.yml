@@ -2,16 +2,18 @@ version: "3"
 services:
 
   keycloak:
-    image: openfact/keycloak-postgres
+    image: openfact/keycloak-ha-postgres
     environment:
-      - POSTGRES_PORT_5432_TCP_ADDR=postgres
+      - POSTGRES_PORT_5432_TCP_ADDR=keycloakdb
       - POSTGRES_PORT_5432_TCP_PORT=5432
     ports:
       - 8080:8080
     networks:
       - sso
+      - business
+      - frontend
     depends_on:
-      - postgres
+      - keycloakdb
     deploy:
       replicas: 2
       update_config:
@@ -19,7 +21,7 @@ services:
         delay: 10s
       restart_policy:
         condition: on-failure
-  postgres:
+  keycloakdb:
     image: postgres:9.4
     environment:
       - POSTGRES_ROOT_PASSWORD=root_password
@@ -27,20 +29,28 @@ services:
       - POSTGRES_USER=keycloak
       - POSTGRES_PASSWORD=password
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - keycloakdb-data:/var/lib/postgresql/data
     networks:
       - sso
     deploy:
       placement:
         constraints: [node.role == manager]
+
   openfact:
-    image: openfact/openfact
+    image: openfact/openfact-postgres
+    environment:
+      - KEYCLOAK_PORT_8080_TCP_ADDR=keycloak
+      - KEYCLOAK_PORT_8080_TCP_PORT=8080
+      - POSTGRES_PORT_5432_TCP_ADDR=openfactdb
+      - POSTGRES_PORT_5432_TCP_PORT=5432
     ports:
       - 8081:8080
     networks:
       - ubl
+      - business
+      - frontend
     depends_on:
-      - postgres-openfact
+      - openfactdb
     deploy:
       replicas: 2
       update_config:
@@ -48,7 +58,7 @@ services:
         delay: 10s
       restart_policy:
         condition: on-failure
-  postgres-openfact:
+  openfactdb:
     image: postgres:9.4
     environment:
       - POSTGRES_ROOT_PASSWORD=root_password
@@ -56,17 +66,41 @@ services:
       - POSTGRES_USER=openfact
       - POSTGRES_PASSWORD=password
     volumes:
-      - openfact-db-data:/var/lib/postgresql/data
+      - openfactdb-data:/var/lib/postgresql/data
     networks:
-      - sso
+      - ubl
     deploy:
       placement:
         constraints: [node.role == manager]
 
+  openfact-web-console:
+    image: openfact/openfact-web-console
+    environment:
+      - KEYCLOAK_URL=keycloak
+      - KEYCLOAK_REALM=openfact
+      - KEYCLOAK_CLIENT_ID=openfact-web-console
+      - OPENFACT_API_ENDPOINT=openfact
+    ports:
+      - 4200:80
+    networks:
+      - frontend
+    depends_on:
+      - keycloak
+      - openfact
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
 networks:
   sso:
   ubl:
+  business:
+  frontend:
 
 volumes:
-  db-data:
-  openfact-db-data:
+  keycloakdb-data:
+  openfactdb-data:
