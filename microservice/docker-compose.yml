@@ -1,40 +1,29 @@
 version: "3"
 services:
 
-  keycloak:
-    image: openfact/keycloak-ha-postgres
+  openfact-web-console:
+    image: openfact-web-console
     environment:
-      - POSTGRES_PORT_5432_TCP_ADDR=keycloakdb
-      - POSTGRES_PORT_5432_TCP_PORT=5432
+      - KEYCLOAK_PORT_8080_TCP_ADDR=192.168.1.30
+      - KEYCLOAK_PORT_8080_TCP_PORT=8080
+      - KEYCLOAK_REALM=openfact
+      - KEYCLOAK_CLIENT_ID=openfact-web-console
+      - OPENFACT_PORT_8080_TCP_ADDR=192.168.1.30
+      - OPENFACT_PORT_8080_TCP_PORT=8081
     ports:
-      - 8080:8080
+      - 4200:80
     networks:
-      - sso
-      - business
       - frontend
     depends_on:
-      - keycloakdb
+      - keycloak
+      - openfact
     deploy:
-      replicas: 2
+      replicas: 1
       update_config:
         parallelism: 2
         delay: 10s
       restart_policy:
         condition: on-failure
-  keycloakdb:
-    image: postgres:9.4
-    environment:
-      - POSTGRES_ROOT_PASSWORD=root_password
-      - POSTGRES_DATABASE=keycloak
-      - POSTGRES_USER=keycloak
-      - POSTGRES_PASSWORD=password
-    volumes:
-      - keycloakdb-data:/var/lib/postgresql/data
-    networks:
-      - sso
-    deploy:
-      placement:
-        constraints: [node.role == manager]
 
   openfact:
     image: openfact/openfact-postgres
@@ -51,8 +40,9 @@ services:
       - frontend
     depends_on:
       - openfactdb
+      - keycloak
     deploy:
-      replicas: 2
+      replicas: 1
       update_config:
         parallelism: 2
         delay: 10s
@@ -73,27 +63,40 @@ services:
       placement:
         constraints: [node.role == manager]
 
-  openfact-web-console:
-    image: openfact/openfact-web-console
+  keycloak:
+    image: openfact/keycloak-postgres
     environment:
-      - KEYCLOAK_URL=keycloak
-      - KEYCLOAK_REALM=openfact
-      - KEYCLOAK_CLIENT_ID=openfact-web-console
-      - OPENFACT_API_ENDPOINT=openfact
+      - POSTGRES_PORT_5432_TCP_ADDR=keycloakdb
+      - POSTGRES_PORT_5432_TCP_PORT=5432
     ports:
-      - 4200:80
+      - 8080:8080
     networks:
+      - sso
+      - business
       - frontend
     depends_on:
-      - keycloak
-      - openfact
+      - keycloakdb
     deploy:
-      replicas: 2
+      replicas: 1
       update_config:
-        parallelism: 1
+        parallelism: 2
         delay: 10s
       restart_policy:
         condition: on-failure
+  keycloakdb:
+    image: postgres:9.4
+    environment:
+      - POSTGRES_ROOT_PASSWORD=root_password
+      - POSTGRES_DATABASE=keycloak
+      - POSTGRES_USER=keycloak
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - keycloakdb-data:/var/lib/postgresql/data
+    networks:
+      - sso
+    deploy:
+      placement:
+        constraints: [node.role == manager]
 
 networks:
   sso:
