@@ -276,7 +276,15 @@
                                         "protocol": "TCP"
                                     }
                                 ],
-                                "env": [                                    
+                                "env": [
+                                    {
+                                        "name": "DB_ADDR",
+                                        "value": "${APPLICATION_NAME}-postgresql=DB"
+                                    },
+                                    {
+                                        "name": "DB_PORT",
+                                        "value": 5432
+                                    },
                                     {
                                         "name": "DB_USERNAME",
                                         "value": "${DB_USERNAME}"

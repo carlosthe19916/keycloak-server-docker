@@ -26,13 +26,13 @@ Start a Keycloak instance and connect to the MySQL instance:
 
 When starting the Keycloak instance you can pass a number of environment variables to configure how it connects to MySQL. For example:
 
-    docker container run --name keycloak --network sso --network-alias keycloak -e MYSQL_PORT_3306_TCP_ADDR=mysql -e MYSQL_PORT_3306_TCP_PORT=3306 -e MYSQL_DATABASE=keycloak -e DB_USERNAME=keycloak -e DB_PASSWORD=password openfact/keycloak-mysql
+    docker container run --name keycloak --network sso --network-alias keycloak -e DB_ADDR=mysql -e DB_PORT=3306 -e MYSQL_DATABASE=keycloak -e DB_USERNAME=keycloak -e DB_PASSWORD=password openfact/keycloak-mysql
 
-#### MYSQL_PORT_3306_TCP_ADDR
+#### DB_ADDR
 
 Specify name of MySQL address (optional, default is `mysql`).
 
-#### MYSQL_PORT_3306_TCP_PORT
+#### DB_PORT
 
 Specify name of MySQL port (optional, default is `3306`).
 

@@ -20,10 +20,10 @@ First start a PostgreSQL instance using the PostgreSQL docker image:
 
 Start two or more Keycloak instances that form a cluster and connect to the PostgreSQL instance running in previously started 'postgres' container:
 
-    docker container run --name keycloak1 --network sso -e POSTGRES_PORT_5432_TCP_ADDR=postgres -e POSTGRES_PORT_5432_TCP_PORT=5432 -e DB_DATABASE=keycloak -e DB_USERNAME=keycloak -e DB_PASSWORD=password -d openfact/keycloak-ha-postgres
+    docker container run --name keycloak1 --network sso -e DB_ADDR=postgres -e DB_PORT=5432 -e DB_DATABASE=keycloak -e DB_USERNAME=keycloak -e DB_PASSWORD=password -d openfact/keycloak-ha-postgres
     docker logs -f keycloak1
 
-    docker container run --name keycloak2 --network sso -e POSTGRES_PORT_5432_TCP_ADDR=postgres -e POSTGRES_PORT_5432_TCP_PORT=5432 -e DB_DATABASE=keycloak -e DB_USERNAME=keycloak -e DB_PASSWORD=password -d openfact/keycloak-ha-postgres
+    docker container run --name keycloak2 --network sso -e DB_ADDR=postgres -e DB_PORT=5432 -e DB_DATABASE=keycloak -e DB_USERNAME=keycloak -e DB_PASSWORD=password -d openfact/keycloak-ha-postgres
     docker logs -f keycloak2
 
 

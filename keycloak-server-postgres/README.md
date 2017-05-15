@@ -26,7 +26,7 @@ Start a Keycloak instance and connect to the PostgreSQL instance:
 
 When starting the Keycloak instance you can pass a number of environment variables to configure how it connects to PostgreSQL. For example:
 
-    docker container run --name keycloak --network sso --network-alias keycloak -e POSTGRES_PORT_5432_TCP_ADDR=postgres -e POSTGRES_PORT_5432_TCP_PORT=5432 -e DB_DATABASE=keycloak -e DB_USERNAME=keycloak -e DB_PASSWORD=password openfact/keycloak-postgres
+    docker container run --name keycloak --network sso --network-alias keycloak -e DB_ADDR=postgres -e DB_PORT=5432 -e DB_DATABASE=keycloak -e DB_USERNAME=keycloak -e DB_PASSWORD=password openfact/keycloak-postgres
 
 #### DB_DATABASE
 

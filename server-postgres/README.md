@@ -31,7 +31,7 @@ Start a Openfact instance and connect to the PostgreSQL instance:
 
 When starting the Openfact instance you can pass a number of environment variables to configure how it connects to PostgreSQL. For example:
 
-    docker container run --name openfact --network ubl --network-alias openfact -e KEYCLOAK_PORT_8080_TCP_ADDR=keycloak -e KEYCLOAK_PORT_8080_TCP_PORT=8080 -e POSTGRES_PORT_5432_TCP_ADDR=postgres -e POSTGRES_PORT_5432_TCP_PORT=5432 -e DB_DATABASE=openfact -e DB_USERNAME=openfact -e DB_PASSWORD=password openfact/openfact-postgres
+    docker container run --name openfact --network ubl --network-alias openfact -e KEYCLOAK_PORT_8080_TCP_ADDR=keycloak -e KEYCLOAK_PORT_8080_TCP_PORT=8080 -e DB_ADDR=postgres -e DB_PORT=5432 -e DB_DATABASE=openfact -e DB_USERNAME=openfact -e DB_PASSWORD=password openfact/openfact-postgres
 
 #### KEYCLOAK_PORT_8080_TCP_ADDR
 
@@ -41,11 +41,11 @@ Specify name of PostgreSQL database (optional, default is `keycloak`).
 
 Specify name of PostgreSQL database (optional, default is `8080`).
 
-#### POSTGRES_PORT_5432_TCP_ADDR
+#### DB_ADDR
 
 Specify name of PostgreSQL database (optional, default is `postgres`).
 
-#### POSTGRES_PORT_5432_TCP_PORT
+#### DB_PORT
 
 Specify name of PostgreSQL database (optional, default is `5432`).
 

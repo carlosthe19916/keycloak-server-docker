@@ -30,8 +30,8 @@ services:
     environment:
       - KEYCLOAK_PORT_8080_TCP_ADDR=keycloak
       - KEYCLOAK_PORT_8080_TCP_PORT=8080
-      - POSTGRES_PORT_5432_TCP_ADDR=openfactdb
-      - POSTGRES_PORT_5432_TCP_PORT=5432
+      - DB_ADDR=openfactdb
+      - DB_PORT=5432
     ports:
       - 8081:8080
     networks:
@@ -66,8 +66,8 @@ services:
   keycloak:
     image: openfact/keycloak-postgres
     environment:
-      - POSTGRES_PORT_5432_TCP_ADDR=keycloakdb
-      - POSTGRES_PORT_5432_TCP_PORT=5432
+      - DB_ADDR=keycloakdb
+      - DB_PORT=5432
     ports:
       - 8080:8080
     networks:
