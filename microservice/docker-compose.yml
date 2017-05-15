@@ -52,9 +52,9 @@ services:
     image: postgres:9.4
     environment:
       - POSTGRES_ROOT_PASSWORD=root_password
-      - POSTGRES_DATABASE=openfact
-      - POSTGRES_USER=openfact
-      - POSTGRES_PASSWORD=password
+      - DB_DATABASE=openfact
+      - DB_USERNAME=openfact
+      - DB_PASSWORD=password
     volumes:
       - openfactdb-data:/var/lib/postgresql/data
     networks:
@@ -87,9 +87,9 @@ services:
     image: postgres:9.4
     environment:
       - POSTGRES_ROOT_PASSWORD=root_password
-      - POSTGRES_DATABASE=keycloak
-      - POSTGRES_USER=keycloak
-      - POSTGRES_PASSWORD=password
+      - DB_DATABASE=keycloak
+      - DB_USERNAME=keycloak
+      - DB_PASSWORD=password
     volumes:
       - keycloakdb-data:/var/lib/postgresql/data
     networks:

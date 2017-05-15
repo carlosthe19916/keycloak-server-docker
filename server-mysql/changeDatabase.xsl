@@ -11,9 +11,18 @@
             <ds:connection-url>jdbc:mysql://${env.MYSQL_PORT_3306_TCP_ADDR:mysql}:${env.MYSQL_PORT_3306_TCP_PORT:3306}/${env.MYSQL_DATABASE:openfact}</ds:connection-url>
             <ds:driver>mysql</ds:driver>
             <ds:security>
-                <ds:user-name>${env.MYSQL_USERNAME:openfact}</ds:user-name>
-                <ds:password>${env.MYSQL_PASSWORD:password}</ds:password>
+                <ds:user-name>${env.DB_USERNAME:openfact}</ds:user-name>
+                <ds:password>${env.DB_PASSWORD:password}</ds:password>
             </ds:security>
+            <xsl:if test="${env.DB_MIN_POOL_SIZE} && ${env.DB_MAX_POOL_SIZE}">
+                <ds:pool>
+                    <ds:min-pool-size>${env.DB_MIN_POOL_SIZE}</ds:min-pool-size>
+                    <ds:max-pool-size>${env.DB_MAX_POOL_SIZE}</ds:max-pool-size>
+                </ds:pool>
+            </xsl:if>
+            <xsl:if test="${env.DB_TX_ISOLATION}">
+                <ds:transaction-isolation>${env.DB_TX_ISOLATION}</ds:transaction-isolation>
+            </xsl:if>
             <ds:validation>
                 <ds:check-valid-connection-sql>SELECT 1</ds:check-valid-connection-sql>
                 <ds:background-validation>true</ds:background-validation>

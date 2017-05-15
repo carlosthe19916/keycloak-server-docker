@@ -11,8 +11,8 @@
             <ds:connection-url>jdbc:mysql://${env.MYSQL_PORT_3306_TCP_ADDR.mysql}:${env.MYSQL_PORT_3306_TCP_PORT.3306}/${env.MYSQL_DATABASE:keycloak}</ds:connection-url>
             <ds:driver>mysql</ds:driver>
             <ds:security>
-                <ds:user-name>${env.MYSQL_USERNAME:keycloak}</ds:user-name>
-                <ds:password>${env.MYSQL_PASSWORD:password}</ds:password>
+                <ds:user-name>${env.DB_USERNAME:keycloak}</ds:user-name>
+                <ds:password>${env.DB_PASSWORD:password}</ds:password>
             </ds:security>
             <ds:validation>
                 <ds:check-valid-connection-sql>SELECT 1</ds:check-valid-connection-sql>

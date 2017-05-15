@@ -4,7 +4,7 @@ keycloak_db:
     MYSQL_ROOT_PASSWORD: root_password
     MYSQL_DATABASE: keycloak
     MYSQL_USER: keycloak
-    MYSQL_PASSWORD: password
+    DB_PASSWORD: password
 keycloak:
   image: openfact/keycloak-mysql
   links:
@@ -15,9 +15,9 @@ openfact_db:
   image: postgres
   environment:
       POSTGRES_ROOT_PASSWORD: root_password
-      POSTGRES_DATABASE: openfact
-      POSTGRES_USER: openfact
-      POSTGRES_PASSWORD: password
+      DB_DATABASE: openfact
+      DB_USERNAME: openfact
+      DB_PASSWORD: password
 openfact:
   image: openfact/openfact
   links:

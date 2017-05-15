@@ -20,7 +20,7 @@ Create a Keycloak instance:
 
 Start a PostgreSQL instance using the PostgreSQL docker image:
 
-    docker container run --name postgres --network ubl --network-alias postgres -e POSTGRES_DATABASE=openfact -e POSTGRES_USER=openfact -e POSTGRES_PASSWORD=password -e POSTGRES_ROOT_PASSWORD=root_password -d postgres
+    docker container run --name postgres --network ubl --network-alias postgres -e DB_DATABASE=openfact -e DB_USERNAME=openfact -e DB_PASSWORD=password -e POSTGRES_ROOT_PASSWORD=root_password -d postgres
 
 ### Start a Openfact HA instance
 
