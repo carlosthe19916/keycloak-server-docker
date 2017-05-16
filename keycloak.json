@@ -30,8 +30,6 @@
       "value": "",
       "required": false
     },
-
-
     {
       "displayName": "Keycloak Database Name",
       "description": "Database name",
@@ -92,8 +90,6 @@
       "value": "512Mi",
       "required": true
     },
-
-
     {
       "displayName": "Openfact Database Name",
       "description": "Openfact Database name",
@@ -136,8 +132,6 @@
       "value": "512Mi",
       "required": true
     },
-
-
     {
       "displayName": "Datasource Minimum Pool Size",
       "description": "Sets xa-pool/min-pool-size for the configured datasource.",
@@ -226,6 +220,95 @@
         },
         "annotations": {
           "description": "The database server's port."
+        }
+      }
+    },
+    {
+      "kind": "DeploymentConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "keycloak",
+        "labels": {
+          "application": "keycloak"
+        }
+      },
+      "spec": {
+        "strategy": {
+          "type": "Recreate"
+        },
+        "triggers": [
+          {
+            "type": "ImageChange",
+            "imageChangeParams": {
+              "automatic": true,
+              "containerNames": [
+                "keycloak"
+              ],
+              "from": {
+                "kind": "ImageStreamTag",
+                "namespace": "${IMAGE_STREAM_NAMESPACE}",
+                "name": "keycloak:latest"
+              }
+            }
+          },
+          {
+            "type": "ConfigChange"
+          }
+        ],
+        "replicas": 1,
+        "selector": {
+          "deploymentConfig": "${APPLICATION_NAME}"
+        },
+        "template": {
+          "metadata": {
+            "name": "${APPLICATION_NAME}",
+            "labels": {
+              "deploymentConfig": "${APPLICATION_NAME}",
+              "application": "${APPLICATION_NAME}"
+            }
+          },
+          "spec": {
+            "terminationGracePeriodSeconds": 75,
+            "containers": [
+              {
+                "name": "${APPLICATION_NAME}",
+                "image": "${APPLICATION_NAME}",
+                "imagePullPolicy": "Always",
+                "lifecycle": {
+                  "preStop": {
+                    "exec": {
+                      "command": [
+                        "/opt/jboss/keycloak/bin/jboss-cli.sh",
+                        "-c",
+                        ":shutdown(timeout=60)"
+                      ]
+                    }
+                  }
+                },
+                "ports": [
+                  {
+                    "name": "http",
+                    "containerPort": 8080,
+                    "protocol": "TCP"
+                  }
+                ],
+                "env": [
+                  {
+                    "name": "DB_USERNAME",
+                    "value": "${KEYCLOAK_DB_USERNAME}"
+                  },
+                  {
+                    "name": "DB_PASSWORD",
+                    "value": "${KEYCLOAK_DB_PASSWORD}"
+                  },
+                  {
+                    "name": "DB_DATABASE",
+                    "value": "${KEYCLOAK_DB_DATABASE}"
+                  }
+                ]
+              }
+            ]
+          }
         }
       }
     },
