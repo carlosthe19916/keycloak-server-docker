@@ -25,7 +25,7 @@
                 <ds:background-validation-millis>60000</ds:background-validation-millis>
             </ds:validation>
             <ds:pool>
-                <ds:flush-strategy>IdleConnections</ds:flush-strategy>
+                <ds:flush-strategy>${env.DB_POOL_FLUSH_STRATEGY:FailingConnectionOnly}</ds:flush-strategy>
             </ds:pool>
         </ds:datasource>
     </xsl:template>
