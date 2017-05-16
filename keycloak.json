@@ -23,10 +23,11 @@
       "value": "keycloak",
       "required": true
     },
+    
     {
-      "displayName": "Custom http Route Hostname",
+      "displayName": "Keycloak Custom http Route Hostname",
       "description": "Custom hostname for http service route.  Leave blank for default hostname, e.g.: <application-name>.<project>.<default-domain-suffix>",
-      "name": "HOSTNAME_HTTP",
+      "name": "KEYCLOAK_HOSTNAME_HTTP",
       "value": "",
       "required": false
     },
@@ -102,6 +103,12 @@
       "required": false
     },
     {
+      "displayName": "Keycloak Datasource Pool Flush Strategy",
+      "description": "Sets flush-strategy for the configured datasource.",
+      "name": "KEYCLOAK_DB_POOL_FLUSH_STRATEGY",
+      "required": false
+    },
+    {
       "displayName": "Keycloak Database Volume Capacity",
       "description": "Size of persistent storage for database volume.",
       "name": "KEYCLOAK_VOLUME_CAPACITY",
@@ -125,7 +132,13 @@
       "required": true
     },
 
-
+    {
+      "displayName": "Openfact Custom http Route Hostname",
+      "description": "Custom hostname for http service route.  Leave blank for default hostname, e.g.: <application-name>.<project>.<default-domain-suffix>",
+      "name": "OPENFACT_HOSTNAME_HTTP",
+      "value": "",
+      "required": false
+    },
     {
       "displayName": "Openfact Database Name",
       "description": "Openfact Database name",
@@ -162,12 +175,38 @@
       "required": false
     },
     {
+      "displayName": "Openfact Datasource Minimum Pool Size",
+      "description": "Sets xa-pool/min-pool-size for the configured datasource.",
+      "name": "OPENFACT_DB_MIN_POOL_SIZE",
+      "required": false
+    },
+    {
+      "displayName": "Openfact Datasource Maximum Pool Size",
+      "description": "Sets xa-pool/max-pool-size for the configured datasource.",
+      "name": "OPENFACT_DB_MAX_POOL_SIZE",
+      "required": false
+    },
+    {
+      "displayName": "Openfact Datasource Transaction Isolation",
+      "description": "Sets transaction-isolation for the configured datasource.",
+      "name": "OPENFACT_DB_TX_ISOLATION",
+      "required": false
+    },
+    {
+      "displayName": "Openfact Datasource Pool Flush Strategy",
+      "description": "Sets flush-strategy for the configured datasource.",
+      "name": "OPENFACT_DB_POOL_FLUSH_STRATEGY",
+      "required": false
+    },
+    {
       "displayName": "Openfact Database Volume Capacity",
       "description": "Size of persistent storage for database volume.",
       "name": "OPENFACT_VOLUME_CAPACITY",
       "value": "512Mi",
       "required": true
     },
+
+
     {
       "displayName": "ImageStream Namespace",
       "description": "Namespace in which the ImageStreams for Red Hat Middleware images are installed. These ImageStreams are normally installed in the openshift namespace. You should only need to modify this if you've installed the ImageStreams in a different namespace/project.",
@@ -197,7 +236,33 @@
           "application": "${APPLICATION_NAME}"
         },
         "annotations": {
-          "description": "The web server's http port."
+          "description": "The web server's http port.",
+          "service.alpha.openshift.io/dependencies": "[{\"name\": \"keycloak-mysql\", \"kind\": \"Service\"}]"
+        }
+      }
+    },
+    {
+      "kind": "Service",
+      "apiVersion": "v1",
+      "spec": {
+        "ports": [
+          {
+            "port": 8080,
+            "targetPort": 8080
+          }
+        ],
+        "selector": {
+          "deploymentConfig": "openfact"
+        }
+      },
+      "metadata": {
+        "name": "openfact",
+        "labels": {
+          "application": "${APPLICATION_NAME}"
+        },
+        "annotations": {
+          "description": "The web server's http port.",
+          "service.alpha.openshift.io/dependencies": "[{\"name\": \"openfact-postgresql\", \"kind\": \"Service\"}]"
         }
       }
     },
@@ -263,9 +328,29 @@
         }
       },
       "spec": {
-        "host": "${HOSTNAME_HTTP}",
+        "host": "${KEYCLOAK_HOSTNAME_HTTP}",
         "to": {
           "name": "keycloak"
+        }
+      }
+    },
+    {
+      "kind": "Route",
+      "apiVersion": "v1",
+      "id": "openfact-http",
+      "metadata": {
+        "name": "openfact",
+        "labels": {
+          "application": "${APPLICATION_NAME}"
+        },
+        "annotations": {
+          "description": "Route for application's http service."
+        }
+      },
+      "spec": {
+        "host": "${OPENFACT_HOSTNAME_HTTP}",
+        "to": {
+          "name": "openfact"
         }
       }
     },
@@ -366,6 +451,119 @@
                   {
                     "name": "DB_TX_ISOLATION",
                     "value": "${KEYCLOAK_DB_TX_ISOLATION}"
+                  },
+                  {
+                    "name": "DB_POOL_FLUSH_STRATEGY",
+                    "value": "${KEYCLOAK_DB_POOL_FLUSH_STRATEGY}"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "kind": "DeploymentConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "openfact",
+        "labels": {
+          "application": "${APPLICATION_NAME}"
+        }
+      },
+      "spec": {
+        "strategy": {
+          "type": "Recreate"
+        },
+        "triggers": [
+          {
+            "type": "ImageChange",
+            "imageChangeParams": {
+              "automatic": true,
+              "containerNames": [
+                "openfact"
+              ],
+              "from": {
+                "kind": "ImageStreamTag",
+                "namespace": "${IMAGE_STREAM_NAMESPACE}",
+                "name": "openfact:latest"
+              }
+            }
+          },
+          {
+            "type": "ConfigChange"
+          }
+        ],
+        "replicas": 1,
+        "selector": {
+          "deploymentConfig": "openfact"
+        },
+        "template": {
+          "metadata": {
+            "name": "openfact",
+            "labels": {
+              "deploymentConfig": "openfact",
+              "application": "${APPLICATION_NAME}"
+            }
+          },
+          "spec": {
+            "terminationGracePeriodSeconds": 75,
+            "containers": [
+              {
+                "name": "openfact",
+                "image": "openfact/openfact-postgres",
+                "imagePullPolicy": "Always",
+                "lifecycle": {
+                  "preStop": {
+                    "exec": {
+                      "command": [
+                        "/opt/jboss/wildfly/bin/jboss-cli.sh",
+                        "-c",
+                        ":shutdown(timeout=60)"
+                      ]
+                    }
+                  }
+                },
+                "ports": [
+                  {
+                    "name": "http",
+                    "containerPort": 8080,
+                    "protocol": "TCP"
+                  }
+                ],
+                "env": [
+                  {
+                    "name": "DB_ADDR",
+                    "value": "openfact-postgres"
+                  },
+                  {
+                    "name": "DB_USERNAME",
+                    "value": "${OPENFACT_DB_USERNAME}"
+                  },
+                  {
+                    "name": "DB_PASSWORD",
+                    "value": "${OPENFACT_DB_PASSWORD}"
+                  },
+                  {
+                    "name": "DB_DATABASE",
+                    "value": "${OPENFACT_DB_DATABASE}"
+                  },
+                  {
+                    "name": "DB_MIN_POOL_SIZE",
+                    "value": "${OPENFACT_DB_MIN_POOL_SIZE}"
+                  },
+                  {
+                    "name": "DB_MAX_POOL_SIZE",
+                    "value": "${OPENFACT_DB_MAX_POOL_SIZE}"
+                  },
+                  {
+                    "name": "DB_TX_ISOLATION",
+                    "value": "${OPENFACT_DB_TX_ISOLATION}"
+                  },
+                  {
+                    "name": "DB_POOL_FLUSH_STRATEGY",
+                    "value": "${OPENFACT_DB_POOL_FLUSH_STRATEGY}"
                   }
                 ]
               }
