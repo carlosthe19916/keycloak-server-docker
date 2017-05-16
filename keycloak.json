@@ -181,6 +181,30 @@
       "spec": {
         "ports": [
           {
+            "port": 8080,
+            "targetPort": 8080
+          }
+        ],
+        "selector": {
+          "deploymentConfig": "keycloak"
+        }
+      },
+      "metadata": {
+        "name": "keycloak",
+        "labels": {
+          "application": "${APPLICATION_NAME}"
+        },
+        "annotations": {
+          "description": "The web server's http port."
+        }
+      }
+    },
+    {
+      "kind": "Service",
+      "apiVersion": "v1",
+      "spec": {
+        "ports": [
+          {
             "port": 3306,
             "targetPort": 3306
           }
@@ -224,12 +248,32 @@
       }
     },
     {
+      "kind": "Route",
+      "apiVersion": "v1",
+      "id": "keycloak-http",
+      "metadata": {
+        "name": "keycloak",
+        "labels": {
+          "application": "${APPLICATION_NAME}"
+        },
+        "annotations": {
+          "description": "Route for application's http service."
+        }
+      },
+      "spec": {
+        "host": "${HOSTNAME_HTTP}",
+        "to": {
+          "name": "keycloak"
+        }
+      }
+    },
+    {
       "kind": "DeploymentConfig",
       "apiVersion": "v1",
       "metadata": {
         "name": "keycloak",
         "labels": {
-          "application": "keycloak"
+          "application": "${APPLICATION_NAME}"
         }
       },
       "spec": {
@@ -257,13 +301,13 @@
         ],
         "replicas": 1,
         "selector": {
-          "deploymentConfig": "${APPLICATION_NAME}"
+          "deploymentConfig": "keycloak"
         },
         "template": {
           "metadata": {
-            "name": "${APPLICATION_NAME}",
+            "name": "keycloak",
             "labels": {
-              "deploymentConfig": "${APPLICATION_NAME}",
+              "deploymentConfig": "keycloak",
               "application": "${APPLICATION_NAME}"
             }
           },
@@ -271,8 +315,8 @@
             "terminationGracePeriodSeconds": 75,
             "containers": [
               {
-                "name": "${APPLICATION_NAME}",
-                "image": "${APPLICATION_NAME}",
+                "name": "keycloak",
+                "image": "openfact/keycloak-mysql",
                 "imagePullPolicy": "Always",
                 "lifecycle": {
                   "preStop": {
@@ -293,6 +337,10 @@
                   }
                 ],
                 "env": [
+                  {
+                    "name": "DB_ADDR",
+                    "value": "keycloak-mysql"
+                  },
                   {
                     "name": "DB_USERNAME",
                     "value": "${KEYCLOAK_DB_USERNAME}"
