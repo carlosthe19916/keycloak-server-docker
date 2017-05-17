@@ -15,18 +15,16 @@
                 <ds:password>${env.DB_PASSWORD:password}</ds:password>
             </ds:security>
             <ds:pool>
-                <ds:min-pool-size>${env.DB_MIN_POOL_SIZE:0}</ds:min-pool-size>
-                <ds:max-pool-size>${env.DB_MAX_POOL_SIZE:20}</ds:max-pool-size>
+                <ds:min-pool-size>${env.DS_MIN_POOL_SIZE:0}</ds:min-pool-size>
+                <ds:max-pool-size>${env.DS_MAX_POOL_SIZE:20}</ds:max-pool-size>
+                <ds:flush-strategy>${env.DS_POOL_FLUSH_STRATEGY:FailingConnectionOnly}</ds:flush-strategy>
             </ds:pool>
-            <ds:transaction-isolation>${env.DB_TX_ISOLATION:TRANSACTION_READ_COMMITTED}</ds:transaction-isolation>
+            <ds:transaction-isolation>${env.DS_TX_ISOLATION:TRANSACTION_READ_COMMITTED}</ds:transaction-isolation>
             <ds:validation>
                 <ds:check-valid-connection-sql>SELECT 1</ds:check-valid-connection-sql>
                 <ds:background-validation>true</ds:background-validation>
                 <ds:background-validation-millis>60000</ds:background-validation-millis>
-            </ds:validation>
-            <ds:pool>
-                <ds:flush-strategy>${env.DB_POOL_FLUSH_STRATEGY:FailingConnectionOnly}</ds:flush-strategy>
-            </ds:pool>
+            </ds:validation>            
         </ds:datasource>
     </xsl:template>
 
