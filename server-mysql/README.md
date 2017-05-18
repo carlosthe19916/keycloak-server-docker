@@ -31,15 +31,11 @@ Start a Openfact instance and connect to the MySQL instance:
 
 When starting the Openfact instance you can pass a number of environment variables to configure how it connects to MySQL. For example:
 
-    docker container run --name openfact --network ubl --network-alias openfact -e KEYCLOAK_PORT_8080_TCP_ADDR=keycloak -e KEYCLOAK_PORT_8080_TCP_PORT=8080 -e DB_ADDR=postgres -e DB_PORT=3306 -e MYSQL_DATABASE=openfact -e MYSQL_USER=openfact -e DB_PASSWORD=password openfact/openfact-mysql
+    docker container run --name openfact --network ubl --network-alias openfact -e KEYCLOAK_AUTH_SERVER_URL=http://mydomain/auth -e DB_ADDR=postgres -e DB_PORT=3306 -e MYSQL_DATABASE=openfact -e MYSQL_USER=openfact -e DB_PASSWORD=password openfact/openfact-mysql
 
-#### KEYCLOAK_PORT_8080_TCP_ADDR
+#### KEYCLOAK_AUTH_SERVER_URL
 
-Specify name of PostgreSQL database (optional, default is `keycloak`).
-
-#### KEYCLOAK_PORT_8080_TCP_PORT
-
-Specify name of PostgreSQL database (optional, default is `8080`).
+Specify name auth server url (optional, default is `keycloak`).
 
 #### DB_ADDR
 

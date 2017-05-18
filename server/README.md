@@ -22,7 +22,7 @@ To boot in standalone mode
 
 # Running with full custom variables
 
-    docker container run --name openfact --network ubl --network-alias openfact -e KEYCLOAK_PORT_8080_TCP_ADDR=keycloak -e KEYCLOAK_PORT_8080_TCP_PORT=8080
+    docker container run --name openfact --network ubl --network-alias openfact -e KEYCLOAK_AUTH_SERVER_URL=http://mydomain/auth openfact/openfact
 
 ## Other details
 
