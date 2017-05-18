@@ -19,7 +19,7 @@ To boot in standalone mode
 
 First start a PostgreSQL instance using the PostgreSQL docker image:
 
-    docker container run --name postgres --network ubl --network-alias postgres -e DB_DATABASE=openfact -e DB_USERNAME=openfact -e DB_PASSWORD=password -e POSTGRES_ROOT_PASSWORD=root_password -d postgres
+    docker container run --name postgres --network ubl --network-alias postgres -e POSTGRES_DATABASE=openfact -e POSTGRES_USER=openfact -e DB_PASSWORD=password -e POSTGRES_ROOT_PASSWORD=root_password -d postgres
 
 ### Start a Openfact instance
 
@@ -31,7 +31,7 @@ Start a Openfact instance and connect to the PostgreSQL instance:
 
 When starting the Openfact instance you can pass a number of environment variables to configure how it connects to PostgreSQL. For example:
 
-    docker container run --name openfact --network ubl --network-alias openfact -e KEYCLOAK_AUTH_SERVER_URL=http://mydomain/auth -e DB_ADDR=postgres -e DB_PORT=5432 -e DB_DATABASE=openfact -e DB_USERNAME=openfact -e DB_PASSWORD=password openfact/openfact-postgres
+    docker container run --name openfact --network ubl --network-alias openfact -e KEYCLOAK_AUTH_SERVER_URL=http://mydomain/auth -e DB_ADDR=postgres -e DB_PORT=5432 -e POSTGRES_DATABASE=openfact -e POSTGRES_USER=openfact -e DB_PASSWORD=password openfact/openfact-postgres
 
 #### KEYCLOAK_AUTH_SERVER_URL
 
@@ -45,11 +45,11 @@ Specify name of PostgreSQL database (optional, default is `postgres`).
 
 Specify name of PostgreSQL database (optional, default is `5432`).
 
-#### DB_DATABASE
+#### POSTGRES_DATABASE
 
 Specify name of PostgreSQL database (optional, default is `openfact`).
 
-#### DB_USERNAME
+#### POSTGRES_USER
 
 Specify user for PostgreSQL database (optional, default is `openfact`).
 
