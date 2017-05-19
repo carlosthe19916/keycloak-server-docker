@@ -1,23 +1,18 @@
 {
   "realm": "openfact",
   "enabled": true,
-  "sslRequired": "external",
-  "privateKey": "MIICXAIBAAKBgQCrVrCuTtArbgaZzL1hvh0xtL5mc7o0NqPVnYXkLvgcwiC3BjLGw1tGEGoJaXDuSaRllobm53JBhjx33UNv+5z/UMG4kytBWxheNVKnL6GgqlNabMaFfPLPCF8kAgKnsi79NMo+n6KnSY8YeUmec/p2vjO2NjsSAVcWEQMVhJ31LwIDAQABAoGAfmO8gVhyBxdqlxmIuglbz8bcjQbhXJLR2EoS8ngTXmN1bo2L90M0mUKSdc7qF10LgETBzqL8jYlQIbt+e6TH8fcEpKCjUlyq0Mf/vVbfZSNaVycY13nTzo27iPyWQHK5NLuJzn1xvxxrUeXI6A2WFpGEBLbHjwpx5WQG9A+2scECQQDvdn9NE75HPTVPxBqsEd2z10TKkl9CZxu10Qby3iQQmWLEJ9LNmy3acvKrE3gMiYNWb6xHPKiIqOR1as7L24aTAkEAtyvQOlCvr5kAjVqrEKXalj0Tzewjweuxc0pskvArTI2Oo070h65GpoIKLc9jf+UA69cRtquwP93aZKtW06U8dQJAF2Y44ks/mK5+eyDqik3koCI08qaC8HYq2wVl7G2QkJ6sbAaILtcvD92ToOvyGyeE0flvmDZxMYlvaZnaQ0lcSQJBAKZU6umJi3/xeEbkJqMfeLclD27XGEFoPeNrmdx0q10Azp4NfJAY+Z8KRyQCR2BEG+oNitBOZ+YXF9KCpH3cdmECQHEigJhYg+ykOvr1aiZUMFT72HU0jnmQe2FVekuG+LJUt2Tm7GtMjTFoGpf0JwrVuZN39fOYAlo+nTixgeW7X8Y=",
-  "publicKey": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCrVrCuTtArbgaZzL1hvh0xtL5mc7o0NqPVnYXkLvgcwiC3BjLGw1tGEGoJaXDuSaRllobm53JBhjx33UNv+5z/UMG4kytBWxheNVKnL6GgqlNabMaFfPLPCF8kAgKnsi79NMo+n6KnSY8YeUmec/p2vjO2NjsSAVcWEQMVhJ31LwIDAQAB",
+  "sslRequired": "external",  
   "requiredCredentials": [
     "password"
   ],
   "users": [
     {
-      "username": "carlos",
-      "enabled": true,
-      "email": "carlos@sistcoop.org",
-      "firstName": "Carlos",
-      "lastName": "Feria",
+      "username": "admin",
+      "enabled": true,      
       "credentials": [
         {
           "type": "password",
-          "value": "carlos"
+          "value": "admin"
         }
       ],
       "attributes": {
@@ -25,80 +20,6 @@
       },
       "realmRoles": [
         "admin",
-        "uma_authorization"
-      ],
-      "clientRoles": {
-        "account": [
-          "view-profile",
-          "manage-account"
-        ]
-      }
-    },
-    {
-      "username": "alex",
-      "enabled": true,
-      "email": "alex@sistcoop.org",
-      "firstName": "Alex",
-      "lastName": "Palomino",
-      "credentials": [
-        {
-          "type": "password",
-          "value": "alex"
-        }
-      ],
-      "attributes": {
-        "organization": "demo"
-      },
-      "realmRoles": [
-        "organization-manager",
-        "uma_authorization"
-      ],
-      "clientRoles": {
-        "account": [
-          "view-profile",
-          "manage-account"
-        ]
-      }
-    },
-    {
-      "username": "shano",
-      "enabled": true,
-      "email": "shano@sistcoop.org",
-      "firstName": "Shano",
-      "lastName": "Huaman",
-      "credentials": [
-        {
-          "type": "password",
-          "value": "shano"
-        }
-      ],
-      "attributes": {
-        "organization": "demo"
-      },
-      "realmRoles": [
-        "organization-user",
-        "uma_authorization"
-      ],
-      "clientRoles": {
-        "account": [
-          "view-profile",
-          "manage-account"
-        ]
-      }
-    },
-    {
-      "username": "pavel",
-      "enabled": true,
-      "email": "pavel@sistcoop.org",
-      "firstName": "Pavel",
-      "lastName": "Tueros",
-      "credentials": [
-        {
-          "type": "password",
-          "value": "pavel"
-        }
-      ],
-      "realmRoles": [
         "uma_authorization"
       ],
       "clientRoles": {
