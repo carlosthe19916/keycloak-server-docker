@@ -1,7 +1,7 @@
 FROM jboss/keycloak:3.1.0.Final
 
 COPY openfact-keycloak-themes.jar /opt/jboss/keycloak/
-RUN $JBOSS_HOME/bin/jboss-cli.sh --command="module add --name=org.keycloak.openfact.themes --resources=openfact-keycloak-themes.jar"
+RUN $JBOSS_HOME/bin/jboss-cli.sh --command="module add --name=org.keycloak.openfact.themes --resources=/opt/jboss/keycloak/openfact-keycloak-themes.jar"
 
 # Standalone.xml modifications.
 RUN sed -i -e 's/<theme>/&\n                <modules>\n                    <module>org.keycloak.openfact.themes<\/module>\n                <\/modules>/' $JBOSS_HOME/standalone/configuration/standalone.xml && \
