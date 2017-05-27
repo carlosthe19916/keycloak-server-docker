@@ -5,42 +5,6 @@
   "requiredCredentials": [
     "password"
   ],
-  "users": [
-    {
-      "username": "admin",
-      "enabled": true,      
-      "credentials": [
-        {
-          "type": "password",
-          "value": "admin"
-        }
-      ],
-      "attributes": {
-        "organization": "master"
-      },
-      "realmRoles": [
-        "admin",
-        "uma_authorization"
-      ],
-      "clientRoles": {
-        "account": [
-          "view-profile",
-          "manage-account"
-        ]
-      }
-    },
-    {
-      "username": "service-account-openfact",
-      "enabled": true,
-      "email": "service-account-openfact@placeholder.org",
-      "serviceAccountClientId": "openfact",
-      "clientRoles": {
-        "openfact": [
-          "uma_protection"
-        ]
-      }
-    }
-  ],
   "roles": {
     "realm": [
       {

@@ -1,5 +1,8 @@
 FROM jboss/keycloak:2.5.5.Final
 
+# Standalone.xml modifications.
+RUN sed -i -e 's/<theme>/&\n                <welcomeTheme>custom-theme<\/welcomeTheme>/' $JBOSS_HOME/standalone/configuration/standalone.xml
+
 ADD openfact-realm.json /opt/jboss/keycloak/
 
 #Give correct permissions when used in an OpenShift environment.
