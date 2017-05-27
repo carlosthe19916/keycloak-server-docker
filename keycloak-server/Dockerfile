@@ -10,7 +10,7 @@ RUN sed -i -e 's/<theme>/&\n                <modules>\n                    <modu
 
     sed -i -e 's/<theme>/&\n                <welcomeTheme>openfact<\/welcomeTheme>/' $JBOSS_HOME/standalone/configuration/standalone.xml && \
     sed -i -e 's/<theme>/&\n                <welcomeTheme>openfact<\/welcomeTheme>/' $JBOSS_HOME/standalone/configuration/standalone-ha.xml && \
-    sed -i -e 's/<theme>/&\n                    <welcomeTheme>openfact<\/welcomeTheme>/' $JBOSS_HOME/domain/configuration/domain.xml && \
+    sed -i -e 's/<theme>/&\n                    <welcomeTheme>openfact<\/welcomeTheme>/' $JBOSS_HOME/domain/configuration/domain.xml
 
 #Give correct permissions when used in an OpenShift environment.
 USER root
