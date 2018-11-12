@@ -1,4 +1,4 @@
-FROM jboss/keycloak:3.1.0.Final
+FROM jboss/keycloak:3.4.3.Final
 
 COPY openfact-keycloak-themes.jar /opt/jboss/keycloak/
 RUN $JBOSS_HOME/bin/jboss-cli.sh --command="module add --name=org.sistcoop.openfact-keycloak-themes --resources=/opt/jboss/keycloak/openfact-keycloak-themes.jar"
